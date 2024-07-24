@@ -16,4 +16,17 @@ class Post extends Model
         'title',
         'content',
     ];
+
+    //カテゴリーとのリレーション関係
+    public function category(){
+
+        return $this->belongsTo(Category::class);
+    }
+
+    //userとのリレーション関係
+    public function user(){
+
+        return $this->belongsTo(User::class);
+    }
+
 }
