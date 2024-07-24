@@ -16,4 +16,13 @@ use Illuminate\Support\Facades\Auth;
 
 Auth::routes();
 
-Route::get('/', [App\Http\Controllers\PostController::class, 'index'])->name('posts.index');
+Route::get('/', [App\Http\Controllers\PostController::class, 'index'])
+->name('posts.index');
+
+Route::get('posts/show/{post}', [App\Http\Controllers\PostController::class, 'show'])
+->name('posts.show');
+
+Route::get('posts/create', [App\Http\Controllers\PostController::class, 'create'])
+->name('posts.create');
+Route::post('posts/create', [App\Http\Controllers\PostController::class, 'store'])
+->name('posts.store');

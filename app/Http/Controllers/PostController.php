@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\PostRequest;
 
 class PostController extends Controller
 {
@@ -11,8 +13,19 @@ class PostController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        $posts = Post::with('category', 'user')->get();
+    {   
+        $category_id = request()->input('category_id');
+        if($category_id){
+            
+            $posts= Post::where('category_id', $category_id)
+            ->with('category', 'user')
+            ->latest()
+            ->get();
+            
+        }else{
+            $posts = Post::with('category', 'user')->get();
+        }
+   
         return view('posts.index', ['posts' => $posts]);
     }
 
@@ -20,16 +33,27 @@ class PostController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        //
+    {   
+        return view('posts.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        //
+ 
+        $post = new Post;
+
+        $post-> user_id = Auth::user()->id;
+        $post-> category_id = $request-> input('category_id');
+        $post-> title = $request->input('title');
+        $post-> content = $request->input('content');
+        $post->save();
+
+        return redirect()->route('posts.index')
+        ->with('success', 'メッセージを投稿しました');
+        
     }
 
     /**
@@ -37,7 +61,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return view('posts.show', compact('post'));
     }
 
     /**
