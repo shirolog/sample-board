@@ -20,10 +20,10 @@ class PostController extends Controller
             $posts= Post::where('category_id', $category_id)
             ->with('category', 'user')
             ->latest()
-            ->get();
+            ->paginate(5);
             
         }else{
-            $posts = Post::with('category', 'user')->get();
+            $posts = Post::with('category', 'user')->paginate(5);
         }
    
         return view('posts.index', ['posts' => $posts]);
@@ -51,7 +51,7 @@ class PostController extends Controller
         $post-> content = $request->input('content');
         $post->save();
 
-        return redirect()->route('posts.index')
+        return redirect()->route('posts.show')
         ->with('success', 'メッセージを投稿しました');
         
     }
@@ -60,7 +60,8 @@ class PostController extends Controller
      * Display the specified resource.
      */
     public function show(Post $post)
-    {
+    {   
+        $post->load('category', 'user', 'comments');
         return view('posts.show', compact('post'));
     }
 

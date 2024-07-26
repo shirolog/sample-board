@@ -19,5 +19,22 @@
                     <a href="{{url('/')}}" class="btn btn-primary">戻る</a>
                 </div>
             </div>
+
+            <div class="p-3">
+                <div class="card-title">コメント一覧</div>
+                @foreach($post->comments as $comment)
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">{{$comment->comment}}</p>
+                            <p class="card-text">投稿者: 
+                            <a href="{{route('users.show', $comment->user->id)}}">{{$comment->user->name}}</a></p>
+                        </div>
+                    </div>
+                @endforeach
+
+                @auth
+                    <a href="{{route('comments.create',  ['post_id' => $post->id])}}" class="btn btn-primary mt-1">コメントする</a>
+                @endauth
+            </div>
     </div>
 @endsection

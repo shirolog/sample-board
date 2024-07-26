@@ -15,6 +15,16 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <style>
+        .text-muted{
+            display: none;
+        }
+        .justify-content-between div:nth-child(2){
+            text-align: left;
+             width: 100%;
+             margin-top: 2px;
+        }
+    </style>
 </head>
 <body>
     <div id="app">

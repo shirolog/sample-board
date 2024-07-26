@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,13 +20,22 @@ use Illuminate\Support\Facades\Auth;
 
 Auth::routes();
 
-Route::get('/', [App\Http\Controllers\PostController::class, 'index'])
+Route::get('/', [PostController::class, 'index'])
 ->name('posts.index');
 
-Route::get('posts/show/{post}', [App\Http\Controllers\PostController::class, 'show'])
+Route::get('posts/show/{post}', [PostController::class, 'show'])
 ->name('posts.show');
 
-Route::get('posts/create', [App\Http\Controllers\PostController::class, 'create'])
-->name('posts.create');
-Route::post('posts/create', [App\Http\Controllers\PostController::class, 'store'])
-->name('posts.store');
+
+Route::get('posts/create', [PostController::class, 'create'])
+->name('posts.create')->middleware('auth');
+Route::post('posts/create', [PostController::class, 'store'])
+->name('posts.store')->middleware('auth');
+
+Route::get('users/{user}', [UserController::class, 'show'])
+->name('users.show');
+
+Route::get('comments', [CommentController::class, 'create'])
+->name('comments.create')->middleware('auth');
+Route::post('comments/store', [CommentController::class, 'store'])
+->name('comments.store')->middleware('auth');

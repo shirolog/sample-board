@@ -29,4 +29,10 @@ class Post extends Model
         return $this->belongsTo(User::class);
     }
 
+    //commentsとのリレーション関係
+    public function comments(){
+
+        return $this->hasMany(Comment::class);
+    }
+
 }
