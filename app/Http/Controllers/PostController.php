@@ -15,18 +15,21 @@ class PostController extends Controller
     public function index()
     {   
         $category_id = request()->input('category_id');
+
         if($category_id){
             
             $posts= Post::where('category_id', $category_id)
             ->with('category', 'user')
             ->latest()
-            ->paginate(5);
-            
+            ->paginate(3)
+            ->withQueryString();// クエリパラメータを引き継ぐ
+
+            return view('posts.index', compact('posts', 'category_id'));
         }else{
-            $posts = Post::with('category', 'user')->paginate(5);
+            $posts = Post::with('category', 'user')->paginate(3);
+            return view('posts.index', compact('posts'));
         }
-   
-        return view('posts.index', ['posts' => $posts]);
+        
     }
 
     /**
@@ -51,7 +54,7 @@ class PostController extends Controller
         $post-> content = $request->input('content');
         $post->save();
 
-        return redirect()->route('posts.show')
+        return redirect()->route('posts.index')
         ->with('success', 'メッセージを投稿しました');
         
     }
@@ -87,5 +90,23 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         //
+    }
+
+    public function search(Request $request)
+    {
+        $request->validate([
+
+            'search' => 'required',
+        ]);
+
+        
+        $posts = Post::Where('title', 'like' ,"%{$request->search}%")
+        ->orWhere('content', 'like' ,"%{$request->search}%")
+        ->paginate(3)
+        ->withQueryString();
+        $search_result = $request->search. 'の検索結果'. $posts->total(). '件';
+
+        return view('posts.index', compact('posts', 'search_result'))
+        ->with('search', $request->search);
     }
 }
