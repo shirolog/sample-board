@@ -15,7 +15,7 @@ class PostController extends Controller
     public function index()
     {   
         $category_id = request()->input('category_id');
-
+    
         if($category_id){
             
             $posts= Post::where('category_id', $category_id)
@@ -99,7 +99,6 @@ class PostController extends Controller
             'search' => 'required',
         ]);
 
-        
         $posts = Post::Where('title', 'like' ,"%{$request->search}%")
         ->orWhere('content', 'like' ,"%{$request->search}%")
         ->paginate(3)
