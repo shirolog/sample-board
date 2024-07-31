@@ -16,7 +16,7 @@
                     <p class="card-title">カテゴリー: {{$post->category->category_name}}</p>
                     <p class="card-title">投稿者: {{$post->user->name}}</p>
                     <p class="card-text">{{$post->content}}</p>
-                    <a href="{{ url('/') }}?search={{ request()->input('search') }}&page={{ request()->input('page') }}"
+                    <a href="{{ route('posts.index') }}?search={{ request()->input('search') }}"
                      class="btn btn-primary">戻る</a>
                     </div>
             </div>

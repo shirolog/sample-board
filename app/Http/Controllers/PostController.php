@@ -105,6 +105,8 @@ class PostController extends Controller
         ->withQueryString();
         $search_result = $request->search. 'の検索結果'. $posts->total(). '件';
 
+        
+
         return view('posts.index', compact('posts', 'search_result'))
         ->with('search', $request->search);
     }

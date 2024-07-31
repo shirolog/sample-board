@@ -28,7 +28,7 @@
     
     <div class="card-header">Board</div>
     @if(isset($search_result))
-        <h5 class="card-title">{{$search_result}}</h5>
+        <h5 class="card-title" style="padding: 10px;">{{$search_result}}</h5>
     @endif    
     <div class="card-body">
         @if($message = Session::get('success'))
@@ -38,39 +38,16 @@
         @endif
         
         @foreach($posts as $post)
-
-            @if(isset($search))
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">{{$post->title}}</h5>
-                    <p class="card-title">カテゴリー: <a href="{{route('posts.index', ['category_id' => $post->category->id])}}">
-                     {{$post->category->category_name}}</a></p>
-                     <p class="card-title">投稿者: <a href="{{route('users.show',  $post->user->id)}}">
-                    {{$post->user->name}}</a></p>
-                    <p class="card-text">{{$post->content}}</p>
-                    <a href="{{route('posts.show', ['post' => $post->id, 'search' => request()->input('search')]) }}?page={{ request()->input('page')}}"
-                     class="btn btn-primary">詳細</a>
+                    <h5 class="card-title">{{ $post->title }}</h5>
+                    <p class="card-title">カテゴリー: <a href="{{ route('posts.index', ['category_id' => $post->category->id]) }}">{{ $post->category->category_name }}</a></p>
+                    <p class="card-title">投稿者: <a href="{{ route('users.show', $post->user->id) }}">{{ $post->user->name }}</a></p>
+                    <p class="card-text">{{ $post->content }}</p>
+                    <a href="{{ route('posts.show', ['post' => $post->id, 'search' => $search ?? null]) }}?page={{ request()->input('page') }}" class="btn btn-primary">詳細</a>
                 </div>
             </div>
-            @else
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">{{$post->title}}</h5>
-                    <p class="card-title">カテゴリー: <a href="{{route('posts.index', ['category_id' => $post->category->id])}}">
-                     {{$post->category->category_name}}</a></p>
-                     <p class="card-title">投稿者: <a href="{{route('users.show',  $post->user->id)}}">
-                    {{$post->user->name}}</a></p>
-                    <p class="card-text">{{$post->content}}</p>
-                    <a href="{{route('posts.show', ['post' => $post->id]) }}?page={{ request()->input('page')}}"
-                     class="btn btn-primary">詳細</a>
-                </div>
-            </div>
-            @endif
         @endforeach
-
-      
             {!! $posts->links('pagination::bootstrap-5') !!}
-
-            
     </div>
 @endsection
