@@ -46,12 +46,16 @@ class PostController extends Controller
     public function store(PostRequest $request)
     {
  
+        $dir = 'images';
+        $path = $request->file('image')->store('public/'. $dir);
+
         $post = new Post;
 
         $post-> user_id = Auth::user()->id;
         $post-> category_id = $request-> input('category_id');
         $post-> title = $request->input('title');
         $post-> content = $request->input('content');
+        $post ->image = $path;
         $post->save();
 
         return redirect()->route('posts.index')

@@ -16,6 +16,7 @@
                     <p class="card-title">カテゴリー: {{$post->category->category_name}}</p>
                     <p class="card-title">投稿者: {{$post->user->name}}</p>
                     <p class="card-text">{{$post->content}}</p>
+                    <p><img src="{{Storage::url($post->image)}}" class="img-fluid" width="40%" alt=""></p>
                     <a href="{{ route('posts.index') }}?search={{ request()->input('search') }}"
                      class="btn btn-primary">戻る</a>
                     </div>

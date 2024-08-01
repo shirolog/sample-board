@@ -15,6 +15,7 @@ class Post extends Model
         'category_id',
         'title',
         'content',
+        'image',
     ];
 
     //カテゴリーとのリレーション関係

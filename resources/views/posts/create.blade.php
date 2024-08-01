@@ -20,12 +20,20 @@
                 </div>
             @endif
             <div class="card-body">
-                <form action="{{route('posts.store')}}" method="post">
+                <form action="{{route('posts.store')}}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                         <label for="title">title</label>
                         <input type="text" name="title" class="form-control" id="title" placeholder="title">
                     </div>
+
+                    <div class="form-group">
+                        <label for="file">Example file input</label>
+                        <input type="file" name="image" class="form-control" id="file" accept="image/png,
+                        image/jpeg, image/jpg, image/gif">
+                    </div>
+
+                    
                     
                     <div class="form-group">
                         <label for="category">category</label>
