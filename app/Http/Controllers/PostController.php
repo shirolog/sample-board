@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\PostRequest;
@@ -15,18 +16,33 @@ class PostController extends Controller
     public function index()
     {   
         $category_id = request()->input('category_id');
+
+        $tag_name = request()->input('tag_name');
+     
     
         if($category_id){
             
             $posts= Post::where('category_id', $category_id)
-            ->with('category', 'user')
+            ->with('category', 'user', 'tags')
             ->latest()
             ->paginate(3)
             ->withQueryString();// クエリパラメータを引き継ぐ
 
             return view('posts.index', compact('posts', 'category_id'));
-        }else{
-            $posts = Post::with('category', 'user')->paginate(3);
+
+        }elseif($tag_name){
+
+                        
+            $posts= Post::where('content', 'like' , "%{$tag_name}%")
+            ->with('category', 'user', 'tags')
+            ->latest()
+            ->paginate(3)
+            ->withQueryString();// クエリパラメータを引き継ぐ
+
+            return view('posts.index', compact('posts', 'tag_name'));
+        }
+        else{
+            $posts = Post::with('category', 'user', 'tags')->paginate(3);
             return view('posts.index', compact('posts'));
         }
         
@@ -56,8 +72,23 @@ class PostController extends Controller
         $post-> title = $request->input('title');
         $post-> content = $request->input('content');
         $post ->image = $path;
-        $post->save();
+        //contentからtagを抽出
+        preg_match_all('/#([a-zA-Z0-9０-９ぁ-んァ-ヶー]+)/u', $request->content, $match);
+        $tags = [];
+        foreach($match[1] as $tag){
+            $found = Tag::firstOrCreate(['tag_name' => $tag]);
 
+            array_push($tags, $found);
+
+        }
+
+        $tag_ids = [];
+        foreach($tags as $tag){
+            array_push($tag_ids, $tag['id']);
+        }
+        
+        $post->save();
+        $post->tags()->attach($tag_ids);         
         return redirect()->route('posts.index')
         ->with('success', 'メッセージを投稿しました');
         

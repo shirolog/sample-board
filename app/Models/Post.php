@@ -36,4 +36,9 @@ class Post extends Model
         return $this->hasMany(Comment::class);
     }
 
+    //tagsとのリレーション関係
+    public function tags(){
+
+        return $this->belongsToMany(Tag::class);
+    }
 }
