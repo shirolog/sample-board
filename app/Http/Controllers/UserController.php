@@ -36,8 +36,12 @@ class UserController extends Controller
      */
     public function show(User $user)
     {   
-        $user->load('posts');
-        return view('users.show', compact('user'));
+       $posts = $user->posts()
+       ->latest()
+       ->paginate(5)
+       ->withQueryString();
+    
+        return view('users.show', compact('user', 'posts'));
     }
 
     /**

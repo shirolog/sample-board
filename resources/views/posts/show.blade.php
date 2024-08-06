@@ -17,14 +17,14 @@
                     <p class="card-title">投稿者: {{$post->user->name}}</p>
                     <p class="card-text">{{$post->content}}</p>
                     <p><img src="{{Storage::url($post->image)}}" class="img-fluid" width="40%" alt=""></p>
-                    <a href="{{ route('posts.index') }}?page={{ request()->input('page') }}"
-                     class="btn btn-primary">戻る</a>
+                    <a href="{{ url('posts/search')}}?search={{request()->input('search')}}&page={{request()->input('page')}}"
+                    class="btn btn-primary">戻る</a>
                     </div>
             </div>
 
             <div class="p-3">
                 <div class="card-title">コメント一覧</div>
-                @foreach($post->comments as $comment)
+                @foreach($comments as $comment)
                     <div class="card">
                         <div class="card-body">
                             <p class="card-text">{{$comment->comment}}</p>
@@ -35,8 +35,10 @@
                 @endforeach
 
                 @auth
-                    <a href="{{route('comments.create', ['post_id' => $post->id])}}" class="btn btn-primary mt-1">コメントする</a>
+                    <a href="{{route('comments.create', ['post_id' => $post->id])}}" class="btn btn-primary mt-5">コメントする</a>
                 @endauth
+
+                <p style="margin-bottom: 50px;">{!! $comments->links('pagination::bootstrap-5') !!}</p>
             </div>
     </div>
 @endsection
