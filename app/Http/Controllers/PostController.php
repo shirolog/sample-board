@@ -18,8 +18,8 @@ class PostController extends Controller
         $category_id = request()->input('category_id');
 
         $tag_name = request()->input('tag_name');
-     
-    
+        
+
         if($category_id){
             
             $posts= Post::where('category_id', $category_id)
@@ -98,11 +98,12 @@ class PostController extends Controller
      * Display the specified resource.
      */
     public function show(Post $post)
-    {   
-      $comments =  $post->comments()
-        ->paginate(5)
-        ->withQueryString();
-        return view('posts.show', compact('post', 'comments'));
+    { 
+        $post->load('category', 'user', 'comments');    
+        $comments =  $post->comments()
+        ->paginate(5);
+        $currentPage = request()->input('page', 1);
+        return view('posts.show', compact('post', 'comments', 'currentPage'));
     }
 
     /**
