@@ -17,10 +17,24 @@
                     <p class="card-title">投稿者: {{$post->user->name}}</p>
                     <p class="card-text">{{$post->content}}</p>
                     <p><img src="{{Storage::url($post->image)}}" class="img-fluid" width="40%" alt=""></p>
-            
-                    <a href="{{ url('posts/search')}}?search={{request()->input('search')}}&page={{request()->input('page')}}"
-                    class="btn btn-primary">戻る</a>
-                    </div>
+
+                    @if(!isset($search) && !isset($category_id))
+                        <a href="{{ url('/')}}?page={{request()->input('page_id')}}"
+                        class="btn btn-primary">戻る</a>
+                    @endif
+
+                    @if(isset($search))
+                        <a href="{{ url('posts/search')}}?search={{request()->input('search')}}&page={{request()->input('page_id')}}"
+                        class="btn btn-primary">戻る</a>
+                    @endif
+
+                    @if(isset($category_id))
+                        <a href="{{ url('/')}}?category_id={{request()->input('category_id')}}&page={{request()->input('page_id')}}"
+                        class="btn btn-primary">戻る</a>
+                    @endif
+
+
+                </div>
             </div>
 
             <div class="p-3">

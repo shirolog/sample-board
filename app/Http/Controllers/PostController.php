@@ -20,6 +20,8 @@ class PostController extends Controller
         $tag_name = request()->input('tag_name');
         
         $currentPage = request()->input('page', 1);
+
+
         if($category_id){
             
             $posts= Post::where('category_id', $category_id)
@@ -32,7 +34,6 @@ class PostController extends Controller
 
         }elseif($tag_name){
 
-                        
             $posts= Post::where('content', 'like' , "%{$tag_name}%")
             ->with('category', 'user', 'tags')
             ->latest()
@@ -102,9 +103,15 @@ class PostController extends Controller
         
         $post->load('category', 'user', 'comments');    
         $comments =  $post->comments()
-        ->paginate(5);
+        ->paginate(5)
+        ->withQueryString();
         $currentPage = request()->input('page', 1);
-        return view('posts.show', compact('post', 'comments', 'currentPage'));
+
+        $search = request()->input('search');
+
+        $category_id = request()->input('category_id');
+      
+        return view('posts.show', compact('post', 'comments', 'currentPage', 'search', 'category_id'));
     }
 
     /**

@@ -49,12 +49,25 @@
                     <p class="card-title">投稿者: <a href="{{ route('users.show', $post->user->id) }}">{{ $post->user->name }}</a></p>
                     <p class="card-text">{{ $post->content }}</p>
                     
-                    <a href="{{route('posts.show', ['post' => $post->id, 'search' => request()->input('search')]) }}&page_id={{$currentPage}}"
-                    class="btn btn-primary">詳細</a>
+                    @if(!isset($search) && !isset($tag_name) && !isset($category_id))
+                        <a href="{{route('posts.show', ['post' => $post->id])}}&page_id={{$currentPage}}"
+                        class="btn btn-primary">詳細</a>
+                    @endif
 
-                    <a href="{{route('posts.show', ['post' => $post->id, 'tag_name' => request()->input('tag_name')]) }}&page_id={{$currentPage}}"
-                    class="btn btn-primary">詳細</a>
+                    @if(isset($search))
+                        <a href="{{route('posts.show', ['post' => $post->id, 'search' => request()->input('search')]) }}&page_id={{$currentPage}}"
+                        class="btn btn-primary">詳細</a>
+                    @endif
 
+                    @if(isset($tag_name))
+                        <a href="{{route('posts.show', ['post' => $post->id, 'tag_name' => request()->input('tag_name')]) }}&page_id={{$currentPage}}"
+                        class="btn btn-primary">詳細</a>
+                    @endif
+
+                    @if(isset($category_id))
+                        <a href="{{route('posts.show', ['post' => $post->id, 'category_id' => request()->input('category_id')]) }}&page_id={{$currentPage}}"
+                        class="btn btn-primary">詳細</a>
+                    @endif
                 </div>
             </div>
         @endforeach
