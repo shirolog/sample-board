@@ -46,7 +46,6 @@ class PostController extends Controller
             $posts = Post::with('category', 'user', 'tags')->paginate(3);
             return view('posts.index', compact('posts', 'currentPage'));
         }
-        
     }
 
     /**

@@ -50,7 +50,7 @@
                     <p class="card-text">{{ $post->content }}</p>
                     
                     @if(!isset($search) && !isset($tag_name) && !isset($category_id))
-                        <a href="{{route('posts.show', ['post' => $post->id])}}&page_id={{$currentPage}}"
+                        <a href="{{route('posts.show', ['post' => $post->id])}}?page_id={{$currentPage}}"
                         class="btn btn-primary">詳細</a>
                     @endif
 

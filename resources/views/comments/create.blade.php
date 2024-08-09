@@ -22,6 +22,7 @@
             <div class="card-body">
                 <form action="{{route('comments.store')}}" method="post">
                 <input type="hidden" name="post_id" value="{{request()->input('post_id')}}">
+                <input type="hidden" name="page_id" value="{{request()->input('page_id')}}">
                 @csrf
                     <div class="form-group">
                         <label for="comment">Comment</label>

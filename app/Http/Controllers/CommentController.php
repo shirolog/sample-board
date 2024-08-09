@@ -22,6 +22,7 @@ class CommentController extends Controller
      */
     public function create()
     {   
+       
         $post_id = request()->input('post_id');
         return view('comments.create', compact('post_id'));
     }
@@ -37,7 +38,10 @@ class CommentController extends Controller
         $comment-> post_id =  $request->input('post_id');
         $comment-> comment =  $request->input('comment');
         $comment->save();
-        return redirect()->route('posts.show', ['post' => $request->input('post_id')])
+
+        $page_id = $request->input('page_id');
+    
+        return redirect()->route('posts.show', ['post' => $request->input('post_id'), 'page_id' => $page_id])
         ->with('success', 'メッセージを投稿しました');
     }
 

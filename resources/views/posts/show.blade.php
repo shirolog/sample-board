@@ -50,7 +50,9 @@
                 @endforeach
 
                 @auth
-                    <a href="{{route('comments.create', ['post_id' => $post->id])}}" class="btn btn-primary mt-5">コメントする</a>
+                <a href="{{ route('comments.create', ['post_id' => $post->id]) }}&page_id={{ request()->input('page_id')}}&page={{ request()->input('page')}}"
+                 class="btn btn-primary mt-5">コメントする</a>
+
                 @endauth
 
                 <p style="margin-bottom: 50px;">{!! $comments->links('pagination::bootstrap-5') !!}</p>
